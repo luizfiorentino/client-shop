@@ -1,31 +1,41 @@
 import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { ProductCard } from "../../components";
+import { fetchProducts } from "../../store/products/actions";
+import { selectallProducts } from "../../store/products/selectors";
 
 export default function ShopPage() {
-  const [products, setProducts] = useState([]);
+  // const [products, setProducts] = useState([]);
+  const dispatch = useDispatch();
+  const allProducts = useSelector(selectallProducts);
 
   useEffect(() => {
-    try {
-      async function fetchProducts() {
-        const URL = `http://localhost:4000/products`;
-        const response = await axios.get(URL);
-        console.log(response);
-        setProducts(response.data);
-      }
-      fetchProducts();
-    } catch (e) {
-      console.log(e);
-    }
-  }, []);
-  console.log("products", products);
+    dispatch(fetchProducts());
+  }, [fetchProducts]);
+
+  // console.log("from comp page: allProducts", test);
+  // useEffect(() => {
+  //   try {
+  //     async function fetchProducts() {
+  //       const URL = `http://localhost:4000/products`;
+  //       const response = await axios.get(URL);
+  //       console.log("response.data=", response.data);
+  //       setProducts(response.data);
+  //     }
+  //     fetchProducts();
+  //   } catch (e) {
+  //     console.log(e);
+  //   }
+  // }, []);
+  // console.log("products", products);
   return (
     <div>
       <h1>Shop</h1>
       <div>
-        {!products
+        {!allProducts
           ? "Loading..."
-          : products.map((product) => {
+          : allProducts.map((product) => {
               return (
                 <ProductCard
                   key={product.id}
