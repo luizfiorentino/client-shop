@@ -3,6 +3,7 @@ import { BrowserRouter } from "react-router-dom";
 import { Routes, Route } from "react-router-dom";
 import { HomePage, DetailsPage, ShopPage } from "./pages/";
 import { NavBar } from "./components/index";
+import ShopCart from "./pages/ShopCart";
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/shop" element={<ShopPage />} />
         <Route path="/details/:id" element={<DetailsPage />} />
+        <Route path="/shopCart" element={<ShopCart />} />
       </Routes>
     </div>
   );

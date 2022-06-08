@@ -9,7 +9,7 @@ export const fetchShopCarts = () => {
   return async (dispatch, getState) => {
     try {
       const response = await axios.get(`${apiUrl}`);
-      dispatch(shopCartsFetchedSuccess(response.data));
+      dispatch(shopCartsFetchedSuccess(response.data.allCarts));
       console.log("from fetch shopCarts thunk", response.data);
     } catch (e) {
       console.log(e.message);

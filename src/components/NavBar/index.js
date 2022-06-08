@@ -4,6 +4,7 @@ import { NavLink } from "react-router-dom";
 import { AiOutlineShoppingCart } from "react-icons/ai";
 import { AiOutlineHeart } from "react-icons/ai";
 import { AiOutlineUser } from "react-icons/ai";
+import { Link } from "react-router-dom";
 
 export default function NavBar() {
   return (
@@ -45,7 +46,10 @@ export default function NavBar() {
       </div>
       <div className="right-bar">
         <h3>
-          Left Bar <AiOutlineUser /> <AiOutlineShoppingCart />{" "}
+          Left Bar <AiOutlineUser />{" "}
+          <Link to="/shopCart">
+            <AiOutlineShoppingCart />
+          </Link>{" "}
           <AiOutlineHeart />
         </h3>
       </div>
