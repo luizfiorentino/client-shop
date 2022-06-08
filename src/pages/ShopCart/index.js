@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchShopCarts } from "../../store/shopCarts/actions";
+import { deleteItem, fetchShopCarts } from "../../store/shopCarts/actions";
 import { selectAllCarts } from "../../store/shopCarts/selectors";
 
 export default function ShopCart() {
@@ -35,6 +35,15 @@ export default function ShopCart() {
 
   console.log("shopCart, carts", carts);
 
+  const removeItem = (id) => {
+    // const item = carts?.map((cart) => {
+    //   return cart.id;
+    // });
+    dispatch(deleteItem(id));
+    // console.log("cartId", item);
+    console.log("id", id);
+  };
+
   return (
     <div>
       <h3>ShopCart</h3>
@@ -45,12 +54,16 @@ export default function ShopCart() {
               <li>
                 <h3>{cart.productName}</h3>
                 <p>{cart.price}</p>
+                <button onClick={() => removeItem(cart.id)}>Remove item</button>
               </li>
             ))}
       </ul>
       <h3>
         {" "}
-        <p>Total amount: {parseInt(shopCartAmount)}</p>
+        <p>
+          <strong>Total amount: </strong>
+          {shopCartAmount}
+        </p>
       </h3>
     </div>
   );

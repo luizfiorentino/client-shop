@@ -14,10 +14,14 @@ export const shopCartSlice = createSlice({
     newShopcartPosted: (state, action) => {
       state.allCarts.push(action.payload);
     },
+    itemDeleteSuccess: (state, action) => {
+      const itemId = action.payload;
+      state.allCarts = state.allCarts.filter((s) => s.id !== itemId);
+    },
   },
 });
 
-export const { shopCartsFetchedSuccess, newShopcartPosted } =
+export const { shopCartsFetchedSuccess, newShopcartPosted, itemDeleteSuccess } =
   shopCartSlice.actions;
 
 export default shopCartSlice.reducer;
