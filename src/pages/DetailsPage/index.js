@@ -5,6 +5,10 @@ import { fetchProductDetails } from "../../store/products/actions";
 import { selectProductDetails } from "../../store/products/selectors";
 import { postNewCart } from "../../store/shopCarts/actions";
 import Reviews from "../../components/Reviews";
+import { postReview } from "../../store/products/actions";
+import Form from "react-bootstrap/Form";
+import Col from "react-bootstrap/Col";
+import Button from "react-bootstrap/Button";
 
 export default function DetailsPage() {
   const [review, setReview] = useState("");
@@ -31,9 +35,13 @@ export default function DetailsPage() {
   };
 
   function submitReview(event) {
+    const prodId = productDetails.id;
+    console.log("prodId=", prodId);
     event.preventDefault();
+    dispatch(postReview(review, prodId));
     console.log("review", review);
   }
+
   return (
     <div>
       <h3>Product Details:</h3>
@@ -49,17 +57,33 @@ export default function DetailsPage() {
       <h4>Rating: {productDetails?.rating}</h4>
       <button onClick={addProductToCart}>Add to shop cart</button>
 
-      <body>
-        <label for="name">Leave your review!:</label>
-        <input
-          type="text"
-          id="name"
-          style={{ width: 300 }}
-          value={review}
-          onChange={(event) => setReview(event.target.value)}
-        />
-        <button onClick={submitReview}>Submit</button>
-      </body>
+      <Form>
+        <h3>Post your review</h3>
+        <Form.Group>
+          <Form.Label>review</Form.Label>
+          <Form.Control
+            value={review}
+            onChange={(event) => setReview(event.target.value)}
+            type="text"
+            placeholder="enter a review"
+          />
+          {/* <input
+            type="text"
+            id="name"
+            style={{ width: 300 }}
+            value={review}
+            onChange={(event) => setReview(event.target.value)}
+          /> */}
+        </Form.Group>
+
+        <Form.Group>
+          <Button type="submit" onClick={submitReview}>
+            Submit
+          </Button>
+        </Form.Group>
+
+        {/* <button onClick={() => submitReview}>Submit</button> */}
+      </Form>
       <Reviews review={review} />
     </div>
   );

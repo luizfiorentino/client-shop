@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   allProducts: [],
   productDetails: null,
+  reviews: [],
 };
 
 export const productSlice = createSlice({
@@ -15,10 +16,17 @@ export const productSlice = createSlice({
     productDetailsFetchedSuccess: (state, action) => {
       state.productDetails = action.payload;
     },
+    reviewsFetchedSuccess: (state, action) => {
+      state.reviews.push(action.payload);
+      // [...state.reviews, ...action.payload];
+    },
   },
 });
 
-export const { productsFetchedSuccess, productDetailsFetchedSuccess } =
-  productSlice.actions;
+export const {
+  productsFetchedSuccess,
+  productDetailsFetchedSuccess,
+  reviewsFetchedSuccess,
+} = productSlice.actions;
 
 export default productSlice.reducer;
