@@ -22,6 +22,19 @@ export const fetchProducts = () => {
   };
 };
 
+export const fetchReviews = () => {
+  return async (dispatch, useState) => {
+    try {
+      const response = await axios.get(`${apiUrl}/reviews/all`);
+      dispatch(reviewsFetchedSuccess(response.data.allReviews));
+      console.log("fetchRev thunk", response.data);
+    } catch (e) {
+      console.log(e.message);
+      createNextState(e);
+    }
+  };
+};
+
 export const fetchProductDetails = (id) => {
   return async (dispatch, getState) => {
     try {

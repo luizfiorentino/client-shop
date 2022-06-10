@@ -1,25 +1,39 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchProductDetails } from "../../store/products/actions";
-import { selectProductDetails } from "../../store/products/selectors";
+import {
+  fetchProductDetails,
+  fetchReviews,
+} from "../../store/products/actions";
+import {
+  selectProductDetails,
+  selectAllReviews,
+} from "../../store/products/selectors";
 import { postNewCart } from "../../store/shopCarts/actions";
 import Reviews from "../../components/Reviews";
 import { postReview } from "../../store/products/actions";
 import Form from "react-bootstrap/Form";
 import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
+import { productsFetchedSuccess } from "../../store/products/slice";
 
 export default function DetailsPage() {
   const [review, setReview] = useState("");
   const dispatch = useDispatch();
   const productDetails = useSelector(selectProductDetails);
+  const reviews = useSelector(selectAllReviews);
   console.log("page prod det - sic", productDetails);
   const { id } = useParams();
 
   useEffect(() => {
     dispatch(fetchProductDetails(id));
   }, [fetchProductDetails, id]);
+
+  useEffect(() => {
+    dispatch(fetchReviews());
+  }, [fetchProductDetails]);
+
+  console.log("det page, reviews selector", reviews);
 
   console.log("det page - productDetails", productDetails);
 
@@ -41,6 +55,11 @@ export default function DetailsPage() {
     dispatch(postReview(review, prodId));
     console.log("review", review);
   }
+
+  const productReviews = reviews.filter(
+    (rev) => rev.productId === productDetails.id
+  );
+  console.log("prod reviews", productReviews);
 
   return (
     <div>
@@ -84,8 +103,31 @@ export default function DetailsPage() {
 
         {/* <button onClick={() => submitReview}>Submit</button> */}
       </Form>
-      <Reviews review={review} />
+      {/* <Reviews productDetails={productDetails} review={review} />
+      {productDetails.review.map((rev) => {
+        return <li key={rev.id}>{rev.userReview}</li>;
+      })} */}
+      {/* <Reviews productDetails={reviews} /> */}
+      <ul>
+        {productReviews.map((rev) => {
+          return <li key={rev.id}>{rev.userReview}</li>;
+        })}
+      </ul>
     </div>
+
+    // {spaces.map(space => {
+    //   return (
+    //     <Space
+    //       key={space.id}
+    //       id={space.id}
+    //       title={space.title}
+    //       description={space.description}
+    //       backgroundColor={space.backgroundColor}
+    //       color={space.color}
+    //       showLink={true}
+    //     />
+    //   );
+    // })}
   );
 }
 
