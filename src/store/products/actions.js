@@ -40,8 +40,11 @@ export const fetchProductDetails = (id) => {
     try {
       const response = await axios.get(`${apiUrl}/${id}`);
       console.log("from actions prod details", response);
-      dispatch(productDetailsFetchedSuccess(response.data));
-      console.log("sec from thunk prod det response.data", response.data);
+      dispatch(productDetailsFetchedSuccess(response.data.thisProduct));
+      console.log(
+        "sec from thunk prod det response.data",
+        response.data.thisProduct
+      );
     } catch (e) {
       console.log(e.message);
     }
