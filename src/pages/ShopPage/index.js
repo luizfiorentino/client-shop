@@ -39,7 +39,9 @@ export default function ShopPage() {
       </select>
       <div>
         {products
-
+          .filter((product) =>
+            category ? product.categoryId === category : true
+          )
           .filter((product) => {
             return (
               product.title.toLowerCase().includes(search) ||
