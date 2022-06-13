@@ -47,6 +47,7 @@ export default function ShopCart() {
   return (
     <div>
       <h3>ShopCart</h3>
+      <h2>Total: {carts?.length} items</h2>
       <ul>
         {!carts
           ? "Loading"

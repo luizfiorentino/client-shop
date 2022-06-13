@@ -6,7 +6,7 @@ import { fetchProducts } from "../../store/products/actions";
 import { selectallProducts } from "../../store/products/selectors";
 
 export default function ShopPage() {
-  // const [products, setProducts] = useState([]);
+  const [category, setCategory] = useState([0]);
   const dispatch = useDispatch();
   const allProducts = useSelector(selectallProducts);
 
@@ -14,24 +14,19 @@ export default function ShopPage() {
     dispatch(fetchProducts());
   }, [fetchProducts]);
 
-  // console.log("from comp page: allProducts", test);
-  // useEffect(() => {
-  //   try {
-  //     async function fetchProducts() {
-  //       const URL = `http://localhost:4000/products`;
-  //       const response = await axios.get(URL);
-  //       console.log("response.data=", response.data);
-  //       setProducts(response.data);
-  //     }
-  //     fetchProducts();
-  //   } catch (e) {
-  //     console.log(e);
-  //   }
-  // }, []);
-  // console.log("products", products);
   return (
     <div>
       <h1>Shop</h1>
+      <select
+        name="categories"
+        value={category}
+        onChange={(event) => event.target.value}
+      >
+        <option value={0}>All</option>
+        {allProducts.map((product) => (
+          <option value={product.categoryId}>{product.category.title}</option>
+        ))}
+      </select>
       <div>
         {!allProducts
           ? "Loading..."
@@ -49,24 +44,5 @@ export default function ShopPage() {
     </div>
   );
 }
-
-// return (
-//   <div>
-//     <h1>::::Helcome to the Harry Potter's Home Page::::</h1>
-//     {sortedCharacters.map((character, index) => {
-//       return (
-//         <CharacterCard
-//           key={index}
-//           id={character.id}
-//           name={character.name}
-//           birth={character.born}
-//           image={character.imgUrl}
-//           house={character.houseId}
-//         />
-//       );
-//     })}
-//   </div>
-// );
-// }
 
 export { ShopPage };

@@ -31,9 +31,9 @@ export default function DetailsPage() {
     dispatch(fetchProductDetails(id));
   }, [fetchProductDetails, id]);
 
-  useEffect(() => {
-    dispatch(fetchReviews());
-  }, [fetchProductDetails]);
+  // useEffect(() => {
+  //   dispatch(fetchReviews());
+  // }, [fetchProductDetails]);
 
   console.log("det page, reviews selector", reviews);
 

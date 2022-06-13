@@ -12,7 +12,7 @@ export const shopCartSlice = createSlice({
       state.allCarts = [...state.allCarts, ...action.payload];
     },
     newShopcartPosted: (state, action) => {
-      state.allCarts.push(action.payload);
+      state.shopCarts.allCarts.push(action.payload);
     },
     itemDeleteSuccess: (state, action) => {
       const itemId = action.payload;
