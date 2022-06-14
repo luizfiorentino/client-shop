@@ -7,6 +7,7 @@ export default function ProductCard(props) {
     <div className="productCard">
       <div>
         <h3>{props.title}</h3>
+        <p>{props.category}</p>
         <p>{props.description}</p>
         <img src={props.image} style={{ width: 400, padding: 20 }} />
       </div>

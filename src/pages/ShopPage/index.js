@@ -53,6 +53,7 @@ export default function ShopPage() {
               key={i}
               id={product.id}
               title={product.title}
+              category={product.category.title}
               image={product.mainImage}
             />
           ))}

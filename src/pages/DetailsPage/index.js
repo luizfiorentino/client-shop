@@ -80,17 +80,18 @@ export default function DetailsPage() {
 
       <h3>Product Details:</h3>
       <p>{id}</p>
-      <h2>{productDetails?.title}</h2>
+      <h2>{productDetails?.thisProduct?.title}</h2>
       {/* <p>Category: {productDetails?.category.title}</p> */}
+      <p>Category: {productDetails?.category?.title}</p>
       <img
-        src={productDetails?.mainImage}
+        src={productDetails?.thisProduct?.mainImage}
         style={{ width: 400, padding: 20 }}
       />
-      <h3>Price: $ {productDetails?.price}</h3>
-      <h3>{productDetails?.description}</h3>
-      <h4>Rating: {productDetails?.rating}</h4>
+      <h3>Price: $ {productDetails?.thisProduct?.price}</h3>
+      <h3>{productDetails?.thisProduct?.description}</h3>
+      <h4>Rating: {productDetails?.thisProduct?.rating}</h4>
       <ul>
-        {productDetails?.reviews.map((rev) => (
+        {productDetails?.thisProduct?.reviews.map((rev) => (
           <li>{rev.userReview}</li>
         ))}
       </ul>
