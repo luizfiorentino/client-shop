@@ -4,6 +4,7 @@ import axios from "axios";
 import { ProductCard } from "../../components";
 import { fetchProducts } from "../../store/products/actions";
 import { selectallProducts } from "../../store/products/selectors";
+import "./styles.css";
 
 export default function ShopPage() {
   const [category, setCategory] = useState([0]);
@@ -38,25 +39,28 @@ export default function ShopPage() {
         ))}
       </select>
       <div>
-        {products
-          .filter((product) =>
-            category ? product.categoryId === category : true
-          )
-          .filter((product) => {
-            return (
-              product.title.toLowerCase().includes(search) ||
-              product.category.title.toLowerCase().includes(search)
-            );
-          })
-          .map((product, i) => (
-            <ProductCard
-              key={i}
-              id={product.id}
-              title={product.title}
-              category={product.category.title}
-              image={product.mainImage}
-            />
-          ))}
+        {!products
+          ? "Loading"
+          : products
+
+              .filter((product) =>
+                category ? product.categoryId === category : true
+              )
+              .filter(
+                (product) =>
+                  product.title.toLowerCase().includes(search) ||
+                  product.category.title.toLowerCase().includes(search)
+              )
+              .sort((a, b) => a.title.localeCompare(b.title))
+              .map((product, i) => (
+                <ProductCard
+                  key={i}
+                  id={product.id}
+                  title={product.title}
+                  category={product.category.title}
+                  image={product.mainImage}
+                />
+              ))}
         {/* {allProducts.sort((a, b) =>
           a.title
             .localeCompare(b.title)

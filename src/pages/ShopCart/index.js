@@ -1,11 +1,18 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteItem, fetchShopCarts } from "../../store/shopCarts/actions";
-import { selectAllCarts } from "../../store/shopCarts/selectors";
+import {
+  selectAllCarts,
+  selectThisUserCart,
+} from "../../store/shopCarts/selectors";
+import { selectUser } from "../../store/user/selectors";
 
 export default function ShopCart() {
   const dispatch = useDispatch();
+
   const carts = useSelector(selectAllCarts);
+
+  //const carts = useSelector(selectThisUserCart);
 
   useEffect(() => {
     dispatch(fetchShopCarts());

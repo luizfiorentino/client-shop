@@ -24,6 +24,8 @@ export const fetchShopCarts = () => {
 export const postNewCart = (productId, productName, price, userEmail) => {
   return async (dispatch, getState) => {
     try {
+      const userEmail = getState().user.profile.email;
+      console.log("thunk", userEmail);
       const response = await axios.post(`${apiUrl}`, {
         productId,
         productName,

@@ -1,4 +1,3 @@
-import { createNextState } from "@reduxjs/toolkit";
 import axios from "axios";
 
 import {
@@ -30,7 +29,6 @@ export const fetchReviews = () => {
       console.log("fetchRev thunk", response.data);
     } catch (e) {
       console.log(e.message);
-      createNextState(e);
     }
   };
 };
@@ -40,7 +38,7 @@ export const fetchProductDetails = (id) => {
     try {
       const response = await axios.get(`${apiUrl}/${id}`);
       console.log("from actions prod details", response);
-      dispatch(productDetailsFetchedSuccess(response.data));
+      dispatch(productDetailsFetchedSuccess(response.data.thisProduct));
       console.log(
         "sec from thunk prod det response.data",
         response.data.thisProduct
@@ -60,7 +58,6 @@ export const postReview = (userReview, prodId) => {
       dispatch(reviewsFetchedSuccess(response.data.newReview));
     } catch (e) {
       console.log(e);
-      createNextState(e);
     }
   };
 };

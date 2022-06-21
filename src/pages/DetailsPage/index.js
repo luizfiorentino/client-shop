@@ -17,6 +17,7 @@ import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
 import { productsFetchedSuccess } from "../../store/products/slice";
 import PageDetails from "../../components/PageDetails";
+import "./styles.css";
 
 export default function DetailsPage() {
   const [review, setReview] = useState("");
@@ -51,7 +52,7 @@ export default function DetailsPage() {
   };
 
   function submitReview(event) {
-    const prodId = productDetails.id;
+    const prodId = productDetails?.id;
     console.log("prodId=", prodId);
     event.preventDefault();
     dispatch(postReview(review, prodId));
@@ -59,8 +60,8 @@ export default function DetailsPage() {
     setReview("");
   }
 
-  const productReviews = reviews.filter((rev) => {
-    return rev.productId === productDetails.id;
+  const productReviews = reviews?.filter((rev) => {
+    return rev.productId === productDetails?.id;
   });
   console.log("prod reviews", productReviews);
 
@@ -80,21 +81,24 @@ export default function DetailsPage() {
 
       <h3>Product Details:</h3>
       <p>{id}</p>
-      <h2>{productDetails?.thisProduct?.title}</h2>
+      <h2>{productDetails?.title}</h2>
       {/* <p>Category: {productDetails?.category.title}</p> */}
       <p>Category: {productDetails?.category?.title}</p>
       <img
-        src={productDetails?.thisProduct?.mainImage}
+        src={productDetails?.mainImage}
         style={{ width: 400, padding: 20 }}
       />
-      <h3>Price: $ {productDetails?.thisProduct?.price}</h3>
-      <h3>{productDetails?.thisProduct?.description}</h3>
-      <h4>Rating: {productDetails?.thisProduct?.rating}</h4>
-      <ul>
-        {productDetails?.thisProduct?.reviews.map((rev) => (
-          <li>{rev.userReview}</li>
-        ))}
-      </ul>
+      <h3>Price: $ {productDetails?.price}</h3>
+      <h3>{productDetails?.description}</h3>
+      <h4>Rating: {productDetails?.rating}</h4>
+      <div>
+        <ul className="productReview">
+          {productDetails?.reviews.map((rev) => (
+            <li>{rev.userReview}</li>
+          ))}
+        </ul>
+      </div>
+
       <button onClick={addProductToCart}>Add to shop cart</button>
 
       <Form>
