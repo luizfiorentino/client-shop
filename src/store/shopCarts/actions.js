@@ -12,9 +12,15 @@ const apiUrl = "http://localhost:4000/shopCarts";
 export const fetchShopCarts = () => {
   return async (dispatch, getState) => {
     try {
+      const userEmail = getState().user.profile.email;
       const response = await axios.get(`${apiUrl}`);
-      dispatch(shopCartsFetchedSuccess(response.data.allCarts));
-      console.log("from fetch shopCarts thunk", response.data);
+      const usersItems = response.data.allCarts.filter(
+        (item) => item.userEmail == userEmail
+      );
+
+      //dispatch(shopCartsFetchedSuccess(response.data.allCarts));
+      dispatch(shopCartsFetchedSuccess(usersItems));
+      console.log("from fetch shopCarts thunk", usersItems);
     } catch (e) {
       console.log(e.message);
     }
