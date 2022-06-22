@@ -10,7 +10,7 @@ import {
   selectAllReviews,
 } from "../../store/products/selectors";
 import { postNewCart } from "../../store/shopCarts/actions";
-import Reviews from "../../components/Reviews";
+
 import { postReview } from "../../store/products/actions";
 import Form from "react-bootstrap/Form";
 import Col from "react-bootstrap/Col";
@@ -18,17 +18,10 @@ import Button from "react-bootstrap/Button";
 import { productsFetchedSuccess } from "../../store/products/slice";
 import PageDetails from "../../components/PageDetails";
 import "./styles.css";
-import Pagination from "../../components/Pagination";
+import ReactPaginate from "react-paginate";
 import axios from "axios";
 
 export default function DetailsPage() {
-  const [review, setReview] = useState("");
-  // Pagination feature
-  const [revs, setRevs] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [revsPerPage, setRevsPerPage] = useState(5);
-  //
   const dispatch = useDispatch();
   const productDetails = useSelector(selectProductDetails);
   console.log("selector", productDetails);
@@ -40,20 +33,42 @@ export default function DetailsPage() {
     dispatch(fetchProductDetails(id));
   }, [fetchProductDetails, id]);
 
-  // useEffect(() => {
-  //   dispatch(fetchReviews());
-  //   setRevs(productReviews);
-  // }, [fetchReviews]);
-
   useEffect(() => {
-    const fetchRevs = async () => {
-      setLoading(true);
-      const res = await axios.get("http://localhost:4000/products/reviews/all");
-      setRevs(res.data.allReviews);
-      setLoading(false);
-    };
-    fetchRevs();
-  }, []);
+    dispatch(fetchReviews());
+  }, [fetchReviews]);
+  const [pageNumber, setPageNumber] = useState(0);
+  // Pagination feature
+  const reviewsPerPage = 5;
+  const pagesVisited = pageNumber * reviewsPerPage;
+
+  const revs = productDetails?.reviews;
+  console.log("revs", revs);
+  const displayReviews = revs
+    ?.slice(pagesVisited, pagesVisited + reviewsPerPage)
+    .map((rev) => {
+      return (
+        <div className="reviews">
+          <h4>{rev.userReview}</h4>
+        </div>
+      );
+    });
+
+  const pageCount = Math.ceil(revs?.length / reviewsPerPage);
+  const changePage = ({ selected }) => {
+    setPageNumber(selected);
+  };
+
+  //
+
+  // useEffect(() => {
+  //   const fetchRevs = async () => {
+  //     setLoading(true);
+  //     const res = await axios.get("http://localhost:4000/products/reviews/all");
+  //     setRevs(res.data.allReviews);
+  //     setLoading(false);
+  //   };
+  //   fetchRevs();
+  // }, []);
   console.log("reviews", reviews);
   //setRevs(reviews);
   const productReviews = reviews?.filter((rev) => {
@@ -62,12 +77,8 @@ export default function DetailsPage() {
   console.log("prod reviews", productReviews);
 
   // Get current reviews
-  const indexOfLastRev = currentPage * revsPerPage;
-  const indexOfFirstRev = indexOfLastRev - revsPerPage;
-  const currentRevs = revs.slice(indexOfFirstRev, indexOfLastRev);
 
   // Change page
-  const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   console.log("det page, reviews selector", reviews);
 
@@ -84,14 +95,14 @@ export default function DetailsPage() {
     );
   };
 
-  function submitReview(event) {
-    const prodId = productDetails?.id;
-    console.log("prodId=", prodId);
-    event.preventDefault();
-    dispatch(postReview(review, prodId));
-    console.log("review", review);
-    setReview("");
-  }
+  // function submitReview(event) {
+  //   const prodId = productDetails?.id;
+  //   console.log("prodId=", prodId);
+  //   event.preventDefault();
+  //   dispatch(postReview(review, prodId));
+  //   console.log("review", review);
+  //   setReview("");
+  // }
 
   return (
     <div>
@@ -109,14 +120,27 @@ export default function DetailsPage() {
       <h4>Rating: {productDetails?.rating}</h4>
       <div className="container mt-5">
         <h3 className="text-primary mb-5">User's Reviews</h3>
-        <Reviews revs={currentRevs} loading={loading} />
-        <Pagination
-          revsPerPage={revsPerPage}
-          totalRevs={revs.length}
-          paginate={paginate}
-        />
       </div>
-      <div></div>
+      <div>
+        <h3>See what users think about this product</h3>
+        {displayReviews}
+        <ReactPaginate
+          previousLabel={"Previous"}
+          nextLabel={"Next"}
+          pageCount={pageCount}
+          onPageChange={changePage}
+          containerClassName={"paginationButtons"}
+          previousLinkClassName={"previousButton"}
+          nextLinkClassName={"previousButton"}
+          disabledClassName={"paginationDisabled"}
+          activeClassName={"paginationActive"}
+        />
+        {/* <ul>
+          {productDetails?.reviews.map((review) => {
+            return <li index={review.id}>{review.userReview}</li>;
+          })}
+        </ul> */}
+      </div>
 
       <button onClick={addProductToCart}>Add to shop cart</button>
 
@@ -124,12 +148,12 @@ export default function DetailsPage() {
         <h3>Post your review</h3>
         <Form.Group>
           <Form.Label>review</Form.Label>
-          <Form.Control
+          {/* <Form.Control
             value={review}
             onChange={(event) => setReview(event.target.value)}
             type="text"
             placeholder="enter a review"
-          />
+          /> */}
           {/* <input
             type="text"
             id="name"
@@ -139,11 +163,11 @@ export default function DetailsPage() {
           /> */}
         </Form.Group>
 
-        <Form.Group>
+        {/* <Form.Group>
           <Button type="submit" onClick={submitReview}>
             Submit
           </Button>
-        </Form.Group>
+        </Form.Group> */}
 
         {/* <button onClick={() => submitReview}>Submit</button> */}
       </Form>
