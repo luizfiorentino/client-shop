@@ -1,14 +1,18 @@
 import React from "react";
 
-export default function Reviews(props) {
+const Reviews = (revs) => {
+  console.log("reviews comp", revs);
   return (
     <div>
-      {/* <ul>
-        {props.reviews.map((rev) => {
-          return <li key={rev.id}>{rev.userReview}</li>;
-        })}
-      </ul> */}
-      {/* <h3>{props.reviews[1].userReview}</h3> */}
+      <p>from reviews component</p>
+      <ul className="list-group mb-4">
+        {revs.revs.map((rev) => (
+          <li key={rev.id} className="list-group-item">
+            {rev.userReview}
+          </li>
+        ))}
+      </ul>
     </div>
   );
-}
+};
+export default Reviews;

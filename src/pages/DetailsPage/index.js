@@ -18,9 +18,17 @@ import Button from "react-bootstrap/Button";
 import { productsFetchedSuccess } from "../../store/products/slice";
 import PageDetails from "../../components/PageDetails";
 import "./styles.css";
+import Pagination from "../../components/Pagination";
+import axios from "axios";
 
 export default function DetailsPage() {
   const [review, setReview] = useState("");
+  // Pagination feature
+  const [revs, setRevs] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [revsPerPage, setRevsPerPage] = useState(5);
+  //
   const dispatch = useDispatch();
   const productDetails = useSelector(selectProductDetails);
   console.log("selector", productDetails);
@@ -34,7 +42,32 @@ export default function DetailsPage() {
 
   // useEffect(() => {
   //   dispatch(fetchReviews());
-  // }, [fetchProductDetails]);
+  //   setRevs(productReviews);
+  // }, [fetchReviews]);
+
+  useEffect(() => {
+    const fetchRevs = async () => {
+      setLoading(true);
+      const res = await axios.get("http://localhost:4000/products/reviews/all");
+      setRevs(res.data.allReviews);
+      setLoading(false);
+    };
+    fetchRevs();
+  }, []);
+  console.log("reviews", reviews);
+  //setRevs(reviews);
+  const productReviews = reviews?.filter((rev) => {
+    return rev.productId === productDetails?.id;
+  });
+  console.log("prod reviews", productReviews);
+
+  // Get current reviews
+  const indexOfLastRev = currentPage * revsPerPage;
+  const indexOfFirstRev = indexOfLastRev - revsPerPage;
+  const currentRevs = revs.slice(indexOfFirstRev, indexOfLastRev);
+
+  // Change page
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   console.log("det page, reviews selector", reviews);
 
@@ -60,25 +93,8 @@ export default function DetailsPage() {
     setReview("");
   }
 
-  const productReviews = reviews?.filter((rev) => {
-    return rev.productId === productDetails?.id;
-  });
-  console.log("prod reviews", productReviews);
-
   return (
     <div>
-      {/* {!productDetails ? (
-        "Loading"
-      ) : (
-        <PageDetails
-          id={productDetails.id}
-          title={productDetails.title}
-          price={productDetails.price}
-          category={productDetails.category}
-          rating={productDetails.rating}
-        />
-      )} */}
-
       <h3>Product Details:</h3>
       <p>{id}</p>
       <h2>{productDetails?.title}</h2>
@@ -91,13 +107,16 @@ export default function DetailsPage() {
       <h3>Price: $ {productDetails?.price}</h3>
       <h3>{productDetails?.description}</h3>
       <h4>Rating: {productDetails?.rating}</h4>
-      <div>
-        <ul className="productReview">
-          {productDetails?.reviews.map((rev) => (
-            <li>{rev.userReview}</li>
-          ))}
-        </ul>
+      <div className="container mt-5">
+        <h3 className="text-primary mb-5">User's Reviews</h3>
+        <Reviews revs={currentRevs} loading={loading} />
+        <Pagination
+          revsPerPage={revsPerPage}
+          totalRevs={revs.length}
+          paginate={paginate}
+        />
       </div>
+      <div></div>
 
       <button onClick={addProductToCart}>Add to shop cart</button>
 
@@ -129,11 +148,11 @@ export default function DetailsPage() {
         {/* <button onClick={() => submitReview}>Submit</button> */}
       </Form>
 
-      <ul>
+      {/* <ul>
         {productReviews.map((rev) => {
           return <li key={rev.id}>{rev.userReview}</li>;
         })}
-      </ul>
+      </ul> */}
     </div>
   );
 }
