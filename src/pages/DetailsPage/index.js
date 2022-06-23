@@ -155,13 +155,13 @@ export default function DetailsPage() {
             type="text"
             placeholder="enter a review"
           />
-          <input
+          {/* <input
             type="text"
             id="name"
             style={{ width: 300 }}
             value={review}
             onChange={(event) => setReview(event.target.value)}
-          />
+          /> */}
         </Form.Group>
 
         <Form.Group>
@@ -170,7 +170,7 @@ export default function DetailsPage() {
           </Button>
         </Form.Group>
 
-        <button onClick={() => submitReview}>Submit</button>
+        {/* <button onClick={() => submitReview}>Submit</button> */}
       </Form>
 
       {/* <ul>
