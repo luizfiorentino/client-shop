@@ -22,6 +22,7 @@ import ReactPaginate from "react-paginate";
 import axios from "axios";
 
 export default function DetailsPage() {
+  const [review, setReview] = useState("");
   const dispatch = useDispatch();
   const productDetails = useSelector(selectProductDetails);
   console.log("selector", productDetails);
@@ -95,14 +96,14 @@ export default function DetailsPage() {
     );
   };
 
-  // function submitReview(event) {
-  //   const prodId = productDetails?.id;
-  //   console.log("prodId=", prodId);
-  //   event.preventDefault();
-  //   dispatch(postReview(review, prodId));
-  //   console.log("review", review);
-  //   setReview("");
-  // }
+  function submitReview(event) {
+    const prodId = productDetails?.id;
+    console.log("prodId=", prodId);
+    event.preventDefault();
+    dispatch(postReview(review, prodId));
+    console.log("review", review);
+    setReview("");
+  }
 
   return (
     <div>
@@ -148,28 +149,28 @@ export default function DetailsPage() {
         <h3>Post your review</h3>
         <Form.Group>
           <Form.Label>review</Form.Label>
-          {/* <Form.Control
+          <Form.Control
             value={review}
             onChange={(event) => setReview(event.target.value)}
             type="text"
             placeholder="enter a review"
-          /> */}
-          {/* <input
+          />
+          <input
             type="text"
             id="name"
             style={{ width: 300 }}
             value={review}
             onChange={(event) => setReview(event.target.value)}
-          /> */}
+          />
         </Form.Group>
 
-        {/* <Form.Group>
+        <Form.Group>
           <Button type="submit" onClick={submitReview}>
             Submit
           </Button>
-        </Form.Group> */}
+        </Form.Group>
 
-        {/* <button onClick={() => submitReview}>Submit</button> */}
+        <button onClick={() => submitReview}>Submit</button>
       </Form>
 
       {/* <ul>

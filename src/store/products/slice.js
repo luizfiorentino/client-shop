@@ -18,8 +18,8 @@ export const productSlice = createSlice({
       state.productDetails = action.payload;
     },
     reviewsFetchedSuccess: (state, action) => {
-      //state.productDetails.reviews.push(action.payload);
-      state.allReviews = [...state.allReviews, ...action.payload];
+      state.productDetails.reviews.push(action.payload);
+      //state.allReviews = [...state.allReviews, ...action.payload];
     },
     // reviewsFetchedSuccess: (state, action) => {
     //   state.reviewDetails.push(action.payload);
